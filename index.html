@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bloomly — Mood Garden</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Quicksand&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/bloomly-mascot.png" type="image/png">
+</head>
+<body>
+  <button id="theme-toggle" aria-label="Toggle dark mode">🌓</button>
+
+  <div class="main-wrapper">
+    <header class="container">
+      <img src="assets/flower.png" alt="Bloomly Mascot" class="logo" id="mascot" />
+      <h1 class="bloom">Bloomly</h1>
+    </header>
+
+    <main class="container card">
+      <p class="tagline">🌸 Let’s tend your mood garden.</p>
+
+      <form id="mood-form">
+        <input type="text" id="mood-input" placeholder="Mood (e.g. joyful, 😔, peaceful)" required />
+        <textarea id="note-input" placeholder="Optional note or moment..."></textarea>
+        <button type="submit">Plant Mood</button>
+      </form>
+
+      <p class="prompt" id="prompt">🪴 Prompt: What would help you feel more balanced today?</p>
+
+      <div id="streak" class="streak-badge"></div> <!-- Moved divider here -->
+
+      <div class="actions">
+        <button id="view-all" class="small-btn">📔 View Entries</button>
+        <button id="export" class="small-btn">📄 Export Check-ins</button>
+      </div>
+
+      <p id="feedback" class="feedback"></p>
+    </main>
+  </div>
+
+  <div class="drawer" id="drawer">
+    <div class="drawer-header">
+      <h2>🌱 Your Bloom Journal</h2>
+      <button id="close-drawer" aria-label="Close drawer">✖</button>
+    </div>
+    <ul class="drawer-list" id="drawer-list"></ul>
+  </div>
+
+  <footer class="container">
+    <p>Made with 🌸 by <a href="https://github.com/shreyapuff" target="_blank">me</a>. Bloomly helps track emotions gently — all local, no account needed.</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

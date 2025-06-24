@@ -1,0 +1,299 @@
+:root {
+  --bg: #fffaf5;
+  --text: #2a1f21;
+  --accent: #f48fb1;
+  --accent-hover: #f06292;
+  --card: #ffffff;
+  --radius: 1.25rem;
+  --font-display: 'Poppins', sans-serif;
+  --font-body: 'Quicksand', sans-serif;
+  --prompt: #7b5e63;
+}
+
+body.dark {
+  --bg: #1a1414;
+  --text: #f9f5f6;
+  --accent: #f396be;
+  --accent-hover: #f1a5c9;
+  --card: #2b1e23;
+  --prompt: #c6b2b6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.4s, color 0.4s;
+}
+
+.main-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+#theme-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.bloom {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.25rem;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.03);
+  width: 100%;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+input,
+textarea {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+button {
+  background: var(--accent);
+  border: none;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-family: var(--font-display);
+  cursor: pointer;
+  transition: background 0.3s ease;
+  color: var(--text);
+}
+
+button:hover {
+  background: var(--accent-hover);
+}
+
+.small-btn {
+  font-size: 0.9rem;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.small-btn:hover {
+  background: var(--accent);
+  color: var(--text);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.prompt {
+  margin-top: 0.5rem;
+  font-style: italic;
+  font-size: 0.95rem;
+  text-align: center;
+  color: var(--prompt);
+}
+
+/* 🌸 Cute Divider UNDER prompt, ABOVE buttons */
+.streak-badge {
+  margin: 1rem auto 0.5rem;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--prompt);
+}
+.streak-badge::before {
+  content: "🌸 🌸 🌸";
+  display: inline-block;
+  letter-spacing: 0.4rem;
+}
+
+.feedback {
+  margin-top: 1rem;
+  text-align: center;
+  font-style: italic;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+/* 🌼 Drawer */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 90%;
+  max-width: 400px;
+  height: 100%;
+  background: var(--card);
+  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  transition: right 0.4s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer.open {
+  right: 0;
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.drawer-header h2 {
+  font-size: 1.2rem;
+}
+
+#close-drawer {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.drawer-list {
+  list-style: none;
+  padding-left: 0;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.drawer-list li {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-left: 3px solid var(--accent);
+  background: var(--bg);
+  border-radius: var(--radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer-list li span {
+  flex: 1;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #cc4c4c;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  color: red;
+}
+
+/* 🍥 Scrollbar */
+.drawer-list::-webkit-scrollbar {
+  width: 8px;
+}
+.drawer-list::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 8px;
+}
+.drawer-list::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+footer {
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 1.5rem;
+  opacity: 0.6;
+}
+
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* ✨ Bloom Animation */
+@keyframes bloom-bounce {
+  0% { transform: scale(1) rotate(0); }
+  50% { transform: scale(1.1) rotate(3deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+.logo.bloom {
+  animation: bloom-bounce 0.8s ease-in-out;
+}
