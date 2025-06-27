@@ -4,29 +4,30 @@ const note = document.getElementById("note-input");
 const feedback = document.getElementById("feedback");
 const promptText = document.getElementById("prompt");
 const mascot = document.getElementById("mascot");
-const streakBadge = document.getElementById("streak");
 const themeToggle = document.getElementById("theme-toggle");
 const exportBtn = document.getElementById("export");
-
 const drawer = document.getElementById("drawer");
 const drawerList = document.getElementById("drawer-list");
 const viewAllBtn = document.getElementById("view-all");
 const closeDrawerBtn = document.getElementById("close-drawer");
 
 const prompts = [
-  "What’s something small you’re grateful for today?",
-  "How can you be kind to yourself right now?",
-  "What would help you feel more balanced?",
-  "What emotion needs your attention?",
-  "What's one soft joy from your day?"
+  "🌼 What’s something small you’re grateful for today?",
+  "🫂 How can you be kind to yourself right now?",
+  "🌿 What would help you feel more balanced?",
+  "💖 What emotion needs your attention?",
+  "🍓 What's one soft joy from your day?",
+  "☁️ What's one thought you'd like to release?",
+  "🐰 If Bloomly could give you a hug, what would it be for?"
 ];
 
 const affirmations = [
-  "🌸 You're doing better than you think.",
+  "🌸 Bloomly says: You're doing better than you think.",
   "🌿 Growth is quiet but powerful.",
   "☀️ It’s okay to bloom slowly.",
   "💧 Even rain helps the garden grow.",
-  "🕊 You showed up. That matters."
+  "🕊 You showed up. That matters.",
+  "🌻 Soft steps are still steps forward."
 ];
 
 // 🌱 Mood Storage
@@ -47,23 +48,46 @@ function deleteMood(index) {
   localStorage.setItem("bloomly-moods", JSON.stringify(moods));
 }
 
-// 🌸 Display main streak + feedback
+// ✨ Mascot Bloom Animation
+function bloomMascot() {
+  mascot.classList.add("bloom");
+  setTimeout(() => mascot.classList.remove("bloom"), 800);
+}
+
+// 🪷 Floating Petals
+function createPetal() {
+  const petal = document.createElement("div");
+  petal.className = "petal";
+  petal.style.left = Math.random() * 100 + "vw";
+  petal.style.animationDuration = 6 + Math.random() * 5 + "s";
+  document.querySelector(".petal-container").appendChild(petal);
+  setTimeout(() => petal.remove(), 12000);
+}
+setInterval(createPetal, 800);
+
+// 🌸 Display affirmation
 function displayMain() {
   const moods = getMoods();
   const uniqueDays = [...new Set(moods.map(m => m.date))];
-  feedback.textContent = uniqueDays.length > 1
+  const streak = uniqueDays.length;
+
+  feedback.textContent = streak > 0
     ? affirmations[Math.floor(Math.random() * affirmations.length)]
     : "";
-  streakBadge.textContent =
-    uniqueDays.length >= 5
-      ? `✨ ${uniqueDays.length}-day streak! You’re blooming beautifully!`
-      : "";
 }
 
 // 📖 Drawer list
 function displayDrawer() {
   const moods = getMoods();
   drawerList.innerHTML = "";
+
+  if (moods.length === 0) {
+    const empty = document.createElement("li");
+    empty.textContent = "No moods planted yet 🌱";
+    empty.style.opacity = 0.6;
+    drawerList.appendChild(empty);
+    return;
+  }
 
   moods.forEach((entry, index) => {
     const li = document.createElement("li");
@@ -101,28 +125,36 @@ form.addEventListener("submit", (e) => {
   input.value = "";
   note.value = "";
 
-  mascot.classList.add("bloom");
-  setTimeout(() => mascot.classList.remove("bloom"), 800);
-
+  bloomMascot();
   displayMain();
+  updatePrompt();
+
   if (drawer.classList.contains("open")) {
     displayDrawer();
   }
-
-  updatePrompt(); // ✅ Prompt only updates when mood is planted
 });
 
-// 🪴 Prompt updater (no timer)
+// 🪴 Prompt updater
 function updatePrompt() {
   const random = prompts[Math.floor(Math.random() * prompts.length)];
-  promptText.textContent = `🪴 Prompt: ${random}`;
+  promptText.textContent = `${random}`;
 }
-updatePrompt(); // Show first prompt on load
 
-// 🌙 Theme toggle
+// 🌙 Theme toggle with memory
 themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem("bloomly-theme", isDark ? "dark" : "light");
 });
+
+// Theme load fallback (in case <script> in HTML doesn't fire fast enough)
+function loadTheme() {
+  const saved = localStorage.getItem("bloomly-theme");
+  if (saved === "dark") {
+    document.body.classList.add("dark");
+  }
+}
+loadTheme();
 
 // 📄 Export moods
 exportBtn.addEventListener("click", () => {
@@ -144,10 +176,12 @@ viewAllBtn.addEventListener("click", () => {
   drawer.classList.add("open");
   displayDrawer();
 });
-
 closeDrawerBtn.addEventListener("click", () => {
   drawer.classList.remove("open");
 });
 
 // 🌿 Initial load
 displayMain();
+updatePrompt();
+
+

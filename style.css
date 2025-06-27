@@ -8,6 +8,8 @@
   --font-display: 'Poppins', sans-serif;
   --font-body: 'Quicksand', sans-serif;
   --prompt: #7b5e63;
+  --petal: rgba(255,192,203,0.2);
+  --glow: rgba(244,143,177,0.4);
 }
 
 body.dark {
@@ -17,6 +19,8 @@ body.dark {
   --accent-hover: #f1a5c9;
   --card: #2b1e23;
   --prompt: #c6b2b6;
+  --petal: rgba(255,192,203,0.1);
+  --glow: rgba(255,255,255,0.2);
 }
 
 * {
@@ -25,6 +29,7 @@ body.dark {
   box-sizing: border-box;
 }
 
+html,
 body {
   background: var(--bg);
   color: var(--text);
@@ -34,15 +39,37 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: background 0.4s, color 0.4s;
+  transition: background 0.6s ease, color 0.6s ease;
+  position: relative;
 }
 
-.main-wrapper {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 2rem 1rem;
+body {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.petal-container {
+  position: fixed;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.petal {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--petal);
+  border-radius: 50%;
+  animation: fall 10s linear infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
 }
 
 #theme-toggle {
@@ -53,6 +80,21 @@ body {
   border: none;
   font-size: 1.4rem;
   cursor: pointer;
+  z-index: 10;
+  transition: transform 0.3s ease;
+}
+#theme-toggle:hover {
+  transform: scale(1.2) rotate(10deg);
+}
+
+.main-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .container {
@@ -74,29 +116,51 @@ header {
 .logo {
   width: 64px;
   height: 64px;
-  border-radius: 50%;
   object-fit: cover;
   transition: transform 0.4s ease;
+  filter: drop-shadow(0 0 8px var(--glow));
+}
+
+.logo.bloom {
+  animation: bloom-bounce 0.8s ease-in-out;
+}
+
+@keyframes bloom-bounce {
+  0% { transform: scale(1) rotate(0); }
+  50% { transform: scale(1.15) rotate(3deg); }
+  100% { transform: scale(1) rotate(0); }
 }
 
 .bloom {
   font-family: var(--font-display);
   font-size: 2rem;
   color: var(--accent);
+  text-shadow: 0 1px 2px var(--glow);
 }
 
 .card {
   background: var(--card);
   border-radius: var(--radius);
   padding: 1.5rem 1.25rem;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
   width: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
 .tagline {
   font-size: 1.2rem;
   text-align: center;
   margin-bottom: 0.5rem;
+}
+
+.prompt {
+  margin: 0.5rem 0 1rem;
+  font-style: italic;
+  font-size: 0.95rem;
+  text-align: center;
+  color: var(--prompt);
+  transition: all 0.4s ease;
 }
 
 form {
@@ -115,6 +179,14 @@ textarea {
   font-family: var(--font-body);
   background: var(--bg);
   color: var(--text);
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: border 0.3s;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--accent);
+  outline: none;
 }
 
 textarea {
@@ -130,12 +202,13 @@ button {
   font-size: 1rem;
   font-family: var(--font-display);
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
   color: var(--text);
 }
 
 button:hover {
   background: var(--accent-hover);
+  transform: scale(1.02);
 }
 
 .small-btn {
@@ -158,37 +231,21 @@ button:hover {
   margin-top: 0.5rem;
 }
 
-.prompt {
-  margin-top: 0.5rem;
-  font-style: italic;
-  font-size: 0.95rem;
-  text-align: center;
-  color: var(--prompt);
-}
-
-/* 🌸 Cute Divider UNDER prompt, ABOVE buttons */
-.streak-badge {
-  margin: 1rem auto 0.5rem;
-  width: 100%;
-  text-align: center;
-  font-size: 0.9rem;
-  color: var(--prompt);
-}
-.streak-badge::before {
-  content: "🌸 🌸 🌸";
-  display: inline-block;
-  letter-spacing: 0.4rem;
-}
-
 .feedback {
   margin-top: 1rem;
   text-align: center;
   font-style: italic;
   font-size: 0.95rem;
-  opacity: 0.8;
+  opacity: 0.9;
+  animation: fadeIn 0.6s ease;
 }
 
-/* 🌼 Drawer */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Drawer */
 .drawer {
   position: fixed;
   top: 0;
@@ -244,6 +301,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 0.9rem;
 }
 
 .drawer-list li span {
@@ -263,7 +321,7 @@ button:hover {
   color: red;
 }
 
-/* 🍥 Scrollbar */
+/* Cute Scrollbar */
 .drawer-list::-webkit-scrollbar {
   width: 8px;
 }
@@ -275,25 +333,15 @@ button:hover {
   background: var(--bg);
 }
 
+/* Footer */
 footer {
   text-align: center;
   font-size: 0.85rem;
   margin-top: 1.5rem;
   opacity: 0.6;
 }
-
 footer a {
   color: var(--accent);
   text-decoration: none;
 }
 
-/* ✨ Bloom Animation */
-@keyframes bloom-bounce {
-  0% { transform: scale(1) rotate(0); }
-  50% { transform: scale(1.1) rotate(3deg); }
-  100% { transform: scale(1) rotate(0); }
-}
-
-.logo.bloom {
-  animation: bloom-bounce 0.8s ease-in-out;
-}

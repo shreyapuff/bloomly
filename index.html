@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -7,35 +7,43 @@
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Quicksand&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/bloomly-mascot.png" type="image/png">
+
+  <!-- 🚫 Prevent theme flicker by preloading class -->
+  <script>
+    try {
+      const saved = localStorage.getItem("bloomly-theme");
+      if (saved === "dark") document.documentElement.classList.add("dark");
+    } catch(e){}
+  </script>
 </head>
 <body>
   <button id="theme-toggle" aria-label="Toggle dark mode">🌓</button>
 
+  <div class="petal-container" aria-hidden="true"></div>
+
   <div class="main-wrapper">
     <header class="container">
-      <img src="assets/flower.png" alt="Bloomly Mascot" class="logo" id="mascot" />
+      <img src="assets/bloomly-mascot.png" alt="Bloomly Mascot" class="logo" id="mascot" />
       <h1 class="bloom">Bloomly</h1>
     </header>
 
     <main class="container card">
       <p class="tagline">🌸 Let’s tend your mood garden.</p>
 
+      <p class="prompt" id="prompt">🪴 Prompt: What would help you feel more balanced today?</p>
+
       <form id="mood-form">
         <input type="text" id="mood-input" placeholder="Mood (e.g. joyful, 😔, peaceful)" required />
         <textarea id="note-input" placeholder="Optional note or moment..."></textarea>
-        <button type="submit">Plant Mood</button>
+        <button type="submit">🌱 Plant Mood</button>
       </form>
-
-      <p class="prompt" id="prompt">🪴 Prompt: What would help you feel more balanced today?</p>
-
-      <div id="streak" class="streak-badge"></div> <!-- Moved divider here -->
 
       <div class="actions">
         <button id="view-all" class="small-btn">📔 View Entries</button>
         <button id="export" class="small-btn">📄 Export Check-ins</button>
       </div>
 
-      <p id="feedback" class="feedback"></p>
+      <p id="feedback" class="feedback" aria-live="polite"></p>
     </main>
   </div>
 
@@ -48,7 +56,7 @@
   </div>
 
   <footer class="container">
-    <p>Made with 🌸 by <a href="https://github.com/shreyapuff" target="_blank">me</a>. Bloomly helps track emotions gently — all local, no account needed.</p>
+    <p>🌷 Made with care by <a href="https://github.com/shreyapuff" target="_blank">me</a>. Bloomly helps track emotions gently — all local, no account needed.</p>
   </footer>
 
   <script src="main.js"></script>
